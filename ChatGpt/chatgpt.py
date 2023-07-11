@@ -11,7 +11,6 @@ def init():
     selected_browser = playwright.firefox
     # Lanza una nueva instancia del navegador en modo headless (sin interfaz gráfica)
     f_time = not os.path.isdir(os.path.join(os.getcwd(), "ChatGpt/cache_gpt"))
-    print(f_time)
     browser = selected_browser.launch_persistent_context(
         os.path.join(os.getcwd(), "ChatGpt/cache_gpt"),headless=not f_time
     )
@@ -33,7 +32,6 @@ class ChatGpt:
 
     def run(self):
         # Añade las cookies al navegador y abre una nueva página
-        print(f_time)
         self.page = browser.new_page()
         # Establece las cabeceras HTTP
         print("Accediendo a OpenAI..")
