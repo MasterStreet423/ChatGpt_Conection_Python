@@ -1,18 +1,18 @@
 from playwright.sync_api import sync_playwright
 import tabulate
 import os
-import atexit
 from .Data import *
 
+
 def init():
-    global playwright,selected_browser,browser,f_time
+    global playwright, selected_browser, browser, f_time
     # Inicializa el navegador Playwright
     playwright = sync_playwright().start()
     selected_browser = playwright.firefox
     # Lanza una nueva instancia del navegador en modo headless (sin interfaz gráfica)
     f_time = not os.path.isdir(os.path.join(os.getcwd(), "ChatGpt/cache_gpt"))
     browser = selected_browser.launch_persistent_context(
-        os.path.join(os.getcwd(), "ChatGpt/cache_gpt"),headless=not f_time
+        os.path.join(os.getcwd(), "ChatGpt/cache_gpt"), headless=not f_time
     )
 
 
@@ -24,16 +24,14 @@ class ChatGpt:
         repeat_prompt=False,
     ) -> None:
         self.link = lnk
-        atexit.register(self.stop)
         self.peticions = 0
         self.prompt = prompt
         self.repeat_prompt = repeat_prompt
         self.running = False
 
     def run(self):
-        # Añade las cookies al navegador y abre una nueva página
+        # abre una nueva página
         self.page = browser.new_page()
-        # Establece las cabeceras HTTP
         print("Accediendo a OpenAI..")
         # Bloquea las rutas de las hojas de estilo y la API de moderación
         if not f_time:
@@ -43,16 +41,24 @@ class ChatGpt:
                 lambda route: route.abort(),
             )
         # Navega a la página de OpenAI
-        self.page.goto(self.link, wait_until="domcontentloaded")
 
         if f_time:
-            self.page.wait_for_timeout(2000)
-            print("Please login on Chat-Gpt, this is only first time")
-            while self.page.url != "https://chat.openai.com/":
-                self.page.wait_for_timeout(200)
+            try:
+                self.page.goto(self.link, wait_until="commit")
+                print("Please login on Chat-Gpt, this is only first time")
+                self.page.wait_for_timeout(2000)
+                while self.page.url != "https://chat.openai.com/":
+                    self.page.wait_for_timeout(200)
+
+            except Exception as e:
+                print(str(e))
+                exit(
+                    "Please Remove folder 'cache_gpt' from 'ChatGpt' folder to try login again"
+                )
             print("Login successfully")
             exit("Relaunch Program")
-
+        else:
+            self.page.goto(self.link, wait_until="domcontentloaded")
         # Define los selectores de los boto nes de politicas
         boton = '//*[@id="radix-:re:"]/div[2]/div[1]/div[2]/button'
         boton2 = '//*[@id="radix-:re:"]/div[2]/div[1]/div[2]/button[2]'
@@ -86,11 +92,10 @@ class ChatGpt:
 
         self.running = True
         if self.prompt != "":
-            print("Dando personalidad..")
+            print("Prompt Inicial..")
             try:
                 self.page.wait_for_timeout(200)
                 self.peticion(self.prompt)
-                # print(self.get_request()["text"])
             except Exception as e:
                 print(e)
 
@@ -159,13 +164,11 @@ class ChatGpt:
             self.peticion("regenerate")
 
         return text
-    
+
     def peticion(self, Question):
-
-
         if not self.running:
             raise Exception("Chat Gpt not is running")
-        
+
         entrada = self.page.query_selector("#prompt-textarea")
 
         if Question == "regenerate" and self.peticions > 0:
@@ -179,7 +182,6 @@ class ChatGpt:
             self.page.keyboard.press("Enter")
             self.peticions += 1
 
-        
         self.check = self.page.locator(f"xpath={CHECKFULL}").locator("div")
 
         while self.check.inner_text().lower() != "regenerate response":
@@ -187,23 +189,26 @@ class ChatGpt:
             if self.check.count() > 1:
                 self.check.nth(1).click()
 
-
         return self.get_request()
 
     def stop(self):
         if self.running:
-            print("\reliminando chat de openai..")
-            btn = self.page.query_selector_all("button.p-1.hover\\:text-white")
-            if btn != []:
-                btn[-1].click()
-            else:
-                print("Dont find button")
-            btn = self.page.query_selector_all("button.p-1.hover\\:text-white")
-            if btn != []:
-                btn[0].click()
-            else:
-                print("Dont find button")
-            print("chat eliminado")
-            self.running = False
-            self.page.close()
-            browser.close()
+            eliminate = True
+            try:
+                print("\reliminando chat de openai..")
+                btn = self.page.query_selector_all("button.p-1.hover\\:text-white")
+                if btn != []:
+                    btn[-1].click(timeout=1000)
+                else:
+                    eliminate = False
+                btn = self.page.query_selector_all("button.p-1.hover\\:text-white")
+                if btn != []:
+                    btn[0].click(timeout=1000)
+                else:
+                    eliminate = False
+                self.running = False
+                self.page.close()
+                browser.close()
+            except:
+                if not eliminate:
+                    print("Error en borrado de chat")
