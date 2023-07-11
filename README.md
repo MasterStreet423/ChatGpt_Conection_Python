@@ -23,12 +23,14 @@
  Esta función detiene la interacción con la página de OpenAI. Cierra la página y el navegador.
  ## Uso
  Para usar este script, simplemente importa la clase ` ChatGpt`, crea una instancia de la clase y luego llama a sus métodos. Por ejemplo:
-'''
+
+```python
 from script import ChatGpt
  chat = ChatGpt(prompt="Hola, soy un bot.")
 chat.run()
 respuesta = chat.peticion("¿Cómo estás?")
 print(respuesta)
 chat.stop()
-'''
+```
+
 Este script es una forma eficiente de interactuar con la API de OpenAI sin tener que lidiar con las solicitudes HTTP y el manejo de cookies.
