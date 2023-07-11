@@ -5,16 +5,16 @@ import atexit
 from .Data import *
 
 def init():
-    global playwright,selected_browser,browser
+    global playwright,selected_browser,browser,f_time
     # Inicializa el navegador Playwright
     playwright = sync_playwright().start()
     selected_browser = playwright.firefox
     # Lanza una nueva instancia del navegador en modo headless (sin interfaz gráfica)
+    f_time = not os.path.isdir(os.path.join(os.getcwd(), "ChatGpt/cache_gpt"))
+    print(f_time)
     browser = selected_browser.launch_persistent_context(
-        os.path.join(os.getcwd(), "ChatGpt/cache_gpt")
+        os.path.join(os.getcwd(), "ChatGpt/cache_gpt"),headless=not f_time
     )
-    # Limpia las cookies del navegador
-    browser.clear_cookies()
 
 
 class ChatGpt:
@@ -27,36 +27,34 @@ class ChatGpt:
         self.link = lnk
         atexit.register(self.stop)
         self.peticions = 0
-        self.cookies = []
         self.prompt = prompt
         self.repeat_prompt = repeat_prompt
         self.running = False
 
     def run(self):
-        # Verifica si hay cookies disponibles
-        if not self.cookies:
-            raise Exception("Cookies not found")
         # Añade las cookies al navegador y abre una nueva página
-        browser.add_cookies(self.cookies)
+        print(f_time)
         self.page = browser.new_page()
-        self.page.evaluate(stealth_js)
         # Establece las cabeceras HTTP
-        self.page.set_extra_http_headers(
-            {
-                "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.150 Safari/537.36"
-            }
-        )
         print("Accediendo a OpenAI..")
         # Bloquea las rutas de las hojas de estilo y la API de moderación
-        self.page.route("**/*.css", lambda route: route.abort())
-        self.page.route(
-            "https://chat.openai.com/backend-api/moderations",
-            lambda route: route.abort(),
-        )
+        if not f_time:
+            self.page.route("**/*.css", lambda route: route.abort())
+            self.page.route(
+                "https://chat.openai.com/backend-api/moderations",
+                lambda route: route.abort(),
+            )
         # Navega a la página de OpenAI
         self.page.goto(self.link, wait_until="domcontentloaded")
 
-        
+        if f_time:
+            self.page.wait_for_timeout(2000)
+            print("Please login on Chat-Gpt, this is only first time")
+            while self.page.url != "https://chat.openai.com/":
+                self.page.wait_for_timeout(200)
+            print("Login successfully")
+            exit("Relaunch Program")
+
         # Define los selectores de los boto nes de politicas
         boton = '//*[@id="radix-:re:"]/div[2]/div[1]/div[2]/button'
         boton2 = '//*[@id="radix-:re:"]/div[2]/div[1]/div[2]/button[2]'
@@ -86,7 +84,7 @@ class ChatGpt:
             button = self.page.locator(f"xpath={boton2}")
             button.click()
         else:
-            print("Politics Dont acepted")
+            print("Politics Don't finded(Don't worry)")
 
         self.running = True
         if self.prompt != "":
@@ -171,8 +169,6 @@ class ChatGpt:
             raise Exception("Chat Gpt not is running")
         
         entrada = self.page.query_selector("#prompt-textarea")
-        if "salir" in Question or "exit" in Question:
-            self.stop()
 
         if Question == "regenerate" and self.peticions > 0:
             self.check.first.click()

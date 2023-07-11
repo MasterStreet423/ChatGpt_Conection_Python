@@ -6,7 +6,6 @@ GPTREQUEST = '//*[@id="__next"]/div[1]/div[2]/div/main/div[2]/div/div/div/div[po
 CONTAINERTEXT = '/div/div[2]/div[1]/div/div'
 
 
-fTIME = False
 
 CHECKFULL = '//*[@id="__next"]/div[1]/div[2]/div/main/div[3]/form/div/div[1]/div/button'
 
