@@ -18,16 +18,19 @@
  ### init()
  Esta función inicializa el navegador Playwright y lanza una nueva instancia del navegador en modo headless (sin interfaz gráfica). También limpia las cookies del navegador.
  ### ChatGpt
- Esta es la clase principal que se utiliza para interactuar con la API de OpenAI.
+ Esta es la clase principal que se utiliza para interactuar con la IA de OpenAI.
  #### `__init__(self, prompt="", lnk="https://chat.openai.com/", repeat_prompt=False) `
  Este es el constructor de la clase. Inicializa varias variables de instancia y registra la función ` stop ` para ser llamada cuando el programa termine.
  
- `prompt` se refiere al mensaje inicial dado a la ia, muy util en el caso que se requiera dar algún tipo de personalidad
+ ##### `prompt` 
+ se refiere al mensaje inicial dado a la ia, muy util en el caso que se requiera dar algún tipo de personalidad
 
- `lnk(Link)` hace referencia a un chat pre-guardado, chatgpt permite reutilizar tus chats copiando el link al cual tenga al momento de cambiar de chat
+ ##### `lnk(Link)` 
+ hace referencia a un chat pre-guardado, chatgpt permite reutilizar tus chats copiando el link al cual tenga al momento de cambiar de chat
 
- `repeat_prompt` se refiere a que si quiere que el prompt inicial sea recordado a ChatGpt en  cada petición usando la sintaxis "(Prompt)(Petición)"
- #### ` run(self) `
+ ##### `repeat_prompt`
+  se refiere a que si quiere que el prompt inicial sea recordado a ChatGpt en  cada petición usando la sintaxis "(Prompt)(Petición)"
+ ##### ` run(self) `
  Esta función inicia la interacción con la página de OpenAI. abre una nueva página, navega a la página de OpenAI, acepta las políticas y luego hace una petición inicial a la API de OpenAI.
  #### ` get_request(self) `
  Esta función obtiene la respuesta de la API de OpenAI. Analiza el contenido de la página para extraer la respuesta en texto.
@@ -37,8 +40,7 @@
  Esta función detiene la interacción con la página de OpenAI. Cierra la página y el navegador.
  ## Uso
  Para usar este script, simplemente importa la clase ` ChatGpt`, crea una instancia de la clase y luego llama a sus métodos. Por ejemplo:
- ## Atributos
- #### `  `
+
 ```python
 from ChatGpt import ChatGpt,init
 
