@@ -1,5 +1,7 @@
 # Documentación del código
- Este código es un script de Python que utiliza la biblioteca Playwright para interactuar con la página web de OpenAI. El script inicia un navegador, navega a la página de OpenAI, acepta las políticas y luego interactúa con la interfaz de usuario de la página para hacer peticiones a la IA de OpenAI, Para usar el proyecto este debe estar en la misma carpeta que el archivo main, del cual se ejecutara el programa.
+ Este código es un script de Python que utiliza la biblioteca Playwright para interactuar con la página web de OpenAI. El script inicia un navegador, navega a la página de OpenAI, acepta las políticas y luego interactúa con la interfaz de usuario de la página para hacer peticiones a la IA de OpenAI.
+ 
+  Para usar el proyecto este debe estar en la misma carpeta que el archivo main, del cual se ejecutara el programa.
 
  No olvidar usar el 
  
@@ -12,11 +14,10 @@
  - **playwright**: Permite automatizar la interacción con los navegadores web.
 - **tabulate**: Ayuda a crear tablas bonitas y fáciles de leer.
 - **os**: Proporciona funciones para interactuar con el sistema operativo.
-- **atexit**: Permite definir funciones de limpieza que deben ser ejecutadas cuando el programa termina.
 - **Data**: Un archivo local del que se importan algunas constantes.
  ## Funciones y Clases
  ### init()
- Esta función inicializa el navegador Playwright y lanza una nueva instancia del navegador en modo headless (sin interfaz gráfica). También limpia las cookies del navegador.
+ Esta función inicializa el navegador Playwright y lanza una nueva instancia del navegador en modo headless (sin interfaz gráfica).
  ### ChatGpt
  Esta es la clase principal que se utiliza para interactuar con la IA de OpenAI.
  #### `__init__(self, prompt="", lnk="https://chat.openai.com/", repeat_prompt=False) `
