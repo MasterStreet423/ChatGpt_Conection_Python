@@ -9,6 +9,12 @@
  playwright install firefox
  ```
  
+En caso de que windows te reconozca ese comando, debes asegurarte que playwright este instalado, en caso que si lo este, usa
+
+```
+python -m playwright install firefox
+```
+
  para que funcione correctamente, en el caso de querer usar otro navegador reemplazar el `selected_browser` en la función init de "chatgpt.py"
  ## Bibliotecas utilizadas
  - **playwright**: Permite automatizar la interacción con los navegadores web.
