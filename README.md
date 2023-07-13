@@ -1,7 +1,7 @@
 # Documentación del código
  Este código es un script de Python que utiliza la biblioteca Playwright para interactuar con la página web de OpenAI. El script inicia un navegador, navega a la página de OpenAI, acepta las políticas y luego interactúa con la interfaz de usuario de la página para hacer peticiones a la IA de OpenAI.
  
-  Para usar el proyecto este debe estar en la misma carpeta que el archivo main, del cual se ejecutara el programa.
+  Para usar el proyecto este debe estar en la misma carpeta que el archivo main, del cual se ejecutara el programa principal.
 
  No olvidar usar el 
  
