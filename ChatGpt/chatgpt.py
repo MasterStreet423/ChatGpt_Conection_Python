@@ -60,8 +60,8 @@ class ChatGpt:
         else:
             self.page.goto(self.link, wait_until="domcontentloaded")
         # Define los selectores de los boto nes de politicas
-        boton = '//*[@id="radix-:re:"]/div[2]/div[1]/div[2]/button'
-        boton2 = '//*[@id="radix-:re:"]/div[2]/div[1]/div[2]/button[2]'
+        boton = PRIMERBOTON
+        boton2 = SEGUNDOBOTON
         print("Aceptando politicas..")
         trying = 0
         politics = False
