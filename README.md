@@ -9,7 +9,7 @@
  playwright install firefox
  ```
  
-En caso de que windows te reconozca ese comando, debes asegurarte que playwright este instalado, en caso que si lo este, usa
+En caso de que windows no te reconozca ese comando, debes asegurarte que Playwright este instalado, en caso que si lo este, usa
 
 ```
 python -m playwright install firefox
