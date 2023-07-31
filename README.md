@@ -15,7 +15,7 @@ En caso de que windows no te reconozca ese comando, debes asegurarte que Playwri
 python -m playwright install firefox
 ```
 
- para que funcione correctamente, en el caso de querer usar otro navegador reemplazar el `selected_browser` en la función init de "chatgpt.py"
+ para que funcione correctamente, en el caso de querer usar otro navegador reemplazar el `selected_browser` en la función init de "sync_gpt.py" o "async_gpt.py"
  ## Bibliotecas utilizadas
  - **playwright**: Permite automatizar la interacción con los navegadores web.
 - **tabulate**: Ayuda a crear tablas bonitas y fáciles de leer.
