@@ -62,7 +62,22 @@ class ChatGpt:
         # Define los selectores de los boto nes de politicas
         boton = PRIMERBOTON
         boton2 = SEGUNDOBOTON
-        print("Aceptando politicas..")
+
+        if not "login" in self.page.url:
+            print("Aceptando politicas..")
+        else:
+            try:
+                print("Please delete cache_gpt folder, session expired")
+                self.stop()
+                
+
+            except Exception as e:
+                print(str(e))
+                exit(
+                    "Please Remove folder 'cache_gpt' from 'ChatGpt' folder to try login again"
+                )
+            exit("Relaunch Program")
+
         trying = 0
         politics = False
         while True:
@@ -184,7 +199,7 @@ class ChatGpt:
 
         self.check = self.page.locator(f"xpath={CHECKFULL}").locator("div")
 
-        while self.check.inner_text().lower() != "regenerate response":
+        while self.check.inner_text().lower() != "regenerate":
             self.page.wait_for_timeout(100)
             if self.check.count() > 1:
                 self.check.nth(1).click()
@@ -195,20 +210,29 @@ class ChatGpt:
         if self.running:
             eliminate = True
             try:
-                print("\reliminando chat de openai..")
                 btn = self.page.query_selector_all("button.p-1.hover\\:text-white")
                 if btn != []:
                     btn[-1].click(timeout=1000)
                 else:
-                    eliminate = False
-                btn = self.page.query_selector_all("button.p-1.hover\\:text-white")
+                    pass
+                btn = self.page.query_selector_all("btn.relative.btn-danger")
                 if btn != []:
                     btn[0].click(timeout=1000)
                 else:
                     eliminate = False
+                if eliminate:
+                    print("\reliminando chat de openai..")
                 self.running = False
                 self.page.close()
                 browser.close()
             except:
                 if not eliminate:
                     print("Error en borrado de chat")
+
+    def __enter__(self):
+        init()
+        self.run()
+        return self
+
+    def __exit__(self,*args):
+        self.stop()

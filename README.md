@@ -48,15 +48,27 @@ python -m playwright install firefox
  ## Uso
  Para usar este script, simplemente importa la clase ` ChatGpt`, crea una instancia de la clase y luego llama a sus métodos. Por ejemplo:
 
+### SINCRÓNICO
 ```python
-from ChatGpt import ChatGpt,init
+from ChatGpt.sync_gpt import ChatGpt
 
-init()
-chat = ChatGpt(prompt="Hola, soy un bot.")
-chat.run()
-respuesta = chat.peticion("¿Cómo estás?")
-print(respuesta)
-chat.stop()
+with ChatGpt() as c:
+    response = c.peticion("¿Cómo estás?")
+    print(response)
+
+```
+### ASÍNCRONO
+```python
+from ChatGpt.async_gpt import ChatGpt
+import asyncio
+
+async def main():
+    async with ChatGpt() as c:
+        response = await c.peticion("¿Cómo estás?")
+        print(response)
+
+asyncio.run(main())
+
 ```
 
 Este script es una forma eficiente de interactuar con la pagina de ChatGpt, ya que el navegador bloquea la carga de css, lo que acelera la carga en conexiones lentas, en solo un par de segundos ya se tiene una conexión establecida con ChatGpt(todo dependiendo de la conexión a internet que se posea) completamente gratis.
