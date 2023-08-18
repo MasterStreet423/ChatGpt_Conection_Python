@@ -45,10 +45,8 @@ class ChatGpt:
         if f_time:
             try:
                 self.page.goto(self.link, wait_until="commit")
-                print("Please login on Chat-Gpt, this is only first time")
-                self.page.wait_for_timeout(2000)
-                while self.page.url != "https://chat.openai.com/":
-                    self.page.wait_for_timeout(200)
+                input("Please login on Chat-Gpt, this is only first time, press enter to continue..")
+
 
             except Exception as e:
                 print(str(e))
